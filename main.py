@@ -63,6 +63,14 @@ class Main():
     def end_of_backg(self, f): #iş parçacıklarından gelen veri ile view objesini kullanarak image labelini güncelle komutu  verir ve sonucu görselleştirir.
         self._view.background_done(self._process.convert_to_pixmap(f))
 
+    def selectDataA(self):
+        path, f_name = self._view.select_file()
+        self._view.setfileAname(f_name)
+
+    def selectDataB(self):
+        path, f_name = self._view.select_file()
+        self._view.setfileBname(f_name)
+
 app = QApplication(sys.argv)
 app.setStyle('Fusion')
 main = Main()

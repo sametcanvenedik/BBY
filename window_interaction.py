@@ -24,7 +24,13 @@ class interactions(QMainWindow):
         self.ui.btn_background.clicked.connect(self._controller.background_calculation)
         self.ui.btn_calculate.clicked.connect(self._controller.calculation_first)
         self.ui.btn_calculate_2.clicked.connect(self._controller.calculation_secound)
+        self.ui.data_select.clicked.connect(self._controller.selectDataA)
+        self.ui.reference_data_select.clicked.connect(self._controller.selectDataB)
+        self.ui.gamma_analysis_window.clicked.connect(lambda: self.show_page(0))
+        self.ui.kalibration_window.clicked.connect(lambda: self.show_page(1))
+        self.ui.film_calibration_window.clicked.connect(lambda: self.show_page(2))
         # self.ui.btn_video.clicked.connect(self._controller.start_video_maker)
+        
     
     def select_folder(self): # dosya seçme işlemini başlatır ve dosya yolunu geri gönderir.
        
@@ -33,6 +39,24 @@ class interactions(QMainWindow):
         path_name = QFileDialog.getExistingDirectory(self,"Data Folder")
         self.ui.btn_background.setEnabled(True)
         return path_name
+
+    def select_file(self):
+
+        file_filter = (
+        "NumPy Files (*.npy *.npz);;"
+        "TIFF Files (*.tiff *.tif);;"
+        "DICOM Files (*.dcm);;"
+        "MCC Files (*.mcc);;"
+        "All Files (*)"
+        )
+        path_name, _ = QFileDialog.getOpenFileName(self, "Select Data File", "", file_filter)
+        file_name = path_name.split('/')[-1]
+        return path_name, file_name
+    def setfileAname(self, n):
+        self.ui.DataAname.setText(n)
+    
+    def setfileBname(self, n):
+        self.ui.DataBname.setText(n)
 
     def clearImages(self):
         self.ui.image.clear()
@@ -75,3 +99,12 @@ class interactions(QMainWindow):
         self.ui.btn_background.setEnabled(True)
         self.ui.btn_calculate.setEnabled(True)
         self.ui.btn_calculate_2.setEnabled(True)
+    
+    def show_page(self, page):
+        self.page_names = {
+        0: "Gama",
+        1: "Veri İşlemleri",
+        2: "Film Kalibrasyon",
+        3: "Help"}
+        self.ui.content.setCurrentIndex(page)
+        self.ui.header_label.setText(self.page_names.get(page, "Unknow"))
